@@ -4,7 +4,7 @@ import { useContext } from "react";
 import Link from "next/link";
 import { useSelectedLayoutSegment } from "next/navigation";
 import { useSession } from "next-auth/react";
-
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { adminConfig } from "@/config/admin";
 import { dashboardConfig } from "@/config/dashboard";
 import { docsConfig } from "@/config/docs";
@@ -142,16 +142,13 @@ export function NavBar({ scroll = false }: NavBarProps) {
               )}
             </>
           ) : status === "unauthenticated" ? (
-            <Button
-              className="hidden gap-2 px-4 md:flex"
-              variant="default"
-              size="sm"
-              rounded="full"
-              onClick={() => setShowSignInModal(true)}
-            >
-              <span>Sign In</span>
-              <Icons.arrowRight className="size-4" />
-            </Button>
+            <ConnectButton
+                key="connect"
+                showBalance={{
+                  smallScreen: false,
+                  largeScreen: false,
+                }}
+              />
           ) : (
             <div className="hidden lg:flex">
               {dashBoard || admin ? (
