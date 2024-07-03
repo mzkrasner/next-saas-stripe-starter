@@ -11,6 +11,12 @@ export type NavItem = {
 
 export type MainNavItem = NavItem;
 
+export type Post = {
+  title: string;
+  description: string;
+  image?: string;
+}
+
 export type SidebarNavItem = {
   title: string;
   disabled?: boolean;

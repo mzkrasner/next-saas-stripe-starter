@@ -69,12 +69,14 @@ export const features = [
     title: "Feature 3",
     description:
       "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
+    image: "https://randomuser.me/api/portraits/men/3.jpg",
     link: "/",
   },
   {
     title: "Feature 4",
     description:
       "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
+    image: "https://randomuser.me/api/portraits/men/3.jpg",
     link: "/",
   },
   {
@@ -87,6 +89,140 @@ export const features = [
     description:
       "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
     link: "/",
+  },
+  {
+    title: "Feature 7",
+    description:
+      "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
+    link: "/",
+  },
+  {
+    title: "Feature 8",
+    description:
+      "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
+    link: "/",
+  },
+  {
+    title: "Feature 9",
+    description:
+      "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
+    link: "/",
+  },
+  {
+    title: "Feature 10",
+    description:
+      "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
+    link: "/",
+  },
+  {
+    title: "Feature 11",
+    description:
+      "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
+    link: "/",
+  },
+  {
+    title: "Feature 12",
+    description:
+      "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
+    link: "/",
+  },
+  {
+    title: "Feature 13",
+    description:
+      "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
+    link: "/",
+  },
+  {
+    title: "Feature 14",
+    description:
+      "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
+    link: "/",
+  },
+  {
+    title: "Feature 15",
+    description:
+      "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
+    link: "/",
+  },
+  {
+    title: "Feature 16",
+    description:
+      "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
+    link: "/",
+  },
+  {
+    title: "Feature 17",
+    description:
+      "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
+    link: "/",
+  },
+  {
+    title: "Feature 18",
+    description:
+      "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
+    link: "/",
+  },
+  {
+    title: "Feature 19",
+    description:
+      "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
+    link: "/",
+  },
+  {
+    title: "Feature 20",
+    description:
+      "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
+    link: "/",
+  },
+  {
+    title: "Feature 21",
+    description:
+      "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
+  },
+  {
+    title: "Feature 22",
+    description:
+      "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
+  },
+  {
+    title: "Feature 23",
+    description:
+      "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
+  },
+  {
+    title: "Feature 24",
+    description:
+      "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
+  },
+  {
+    title: "Feature 25",
+    description:
+      "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
+  },
+  {
+    title: "Feature 26",
+    description:
+      "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
+  },
+  {
+    title: "Feature 27",
+    description:
+      "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
+  },
+  {
+    title: "Feature 28",
+    description:
+      "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
+  },
+  {
+    title: "Feature 29",
+    description:
+      "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
+  },
+  {
+    title: "Feature 30",
+    description:
+      "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
   },
 ];
 
