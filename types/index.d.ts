@@ -15,6 +15,7 @@ export type Post = {
   title: string;
   description: string;
   image?: string;
+  streamId: string;
 }
 
 export type SidebarNavItem = {
@@ -32,6 +33,15 @@ export type SidebarNavItem = {
       items: NavLink[];
     }
 );
+
+export type Profile = {
+  name: string;
+  username: string;
+  stream_id?: string;
+  imageId: string;
+  description: string;
+  controller?: string;
+}
 
 export type SiteConfig = {
   name: string;

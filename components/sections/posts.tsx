@@ -107,7 +107,10 @@ export default function Posts() {
                         rounded="xl"
                         className="px-4"
                       >
-                        <Link href="/" className="flex items-center gap-2">
+                        <Link
+                          href={`/post/${post.streamId}`}
+                          className="flex items-center gap-2"
+                        >
                           <span>Thread</span>
                           <Icons.arrowUpRight className="size-4" />
                         </Link>

@@ -63,14 +63,14 @@ export function HomeModules({ userId, subscriptionPlan }: PricingCardsProps) {
               <Button
                 variant={"default"}
                 rounded="full"
-                onClick={() => setShowSignInModal(true)}
+                onClick={() => (window.location.href = "/post")}
               >
                 Create a Post
               </Button>
               <Button
                 variant={"outline"}
                 rounded="full"
-                onClick={() => setShowSignInModal(true)}
+                onClick={() => (window.location.href = "/profile")}
               >
                 Edit Profile
               </Button>

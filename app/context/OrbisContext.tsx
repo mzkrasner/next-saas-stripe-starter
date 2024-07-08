@@ -119,4 +119,4 @@ export const ODB = ({ children }: OrbisDBProps) => {
   );
 };
 
-export const useComposeDB = () => useContext(Context);
+export const useODB = () => useContext(Context);

@@ -12,9 +12,10 @@ import { Toaster } from "@/components/ui/sonner";
 import { Analytics } from "@/components/analytics";
 import ModalProvider from "@/components/modals/providers";
 import { TailwindIndicator } from "@/components/tailwind-indicator";
-
+import { env } from "@/env.mjs";
 import { ODB } from "./context/OrbisContext";
 import { WalletProvider } from "./context/WalletContext";
+import { ThirdwebProvider } from "@thirdweb-dev/react";
 
 interface RootLayoutProps {
   children: React.ReactNode;
@@ -47,8 +48,11 @@ export default function RootLayout({ children }: RootLayoutProps) {
             <QueryClientProvider client={queryClient}>
               <WalletProvider>
                 <ODB>
+                <ThirdwebProvider activeChain="ethereum" clientId={env.NEXT_PUBLIC_THIRDWEB_ID}>
                   <ModalProvider>{children}</ModalProvider>
+                  </ThirdwebProvider>
                 </ODB>
+               
               </WalletProvider>
             </QueryClientProvider>
             <Analytics />

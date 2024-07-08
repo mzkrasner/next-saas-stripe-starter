@@ -58,12 +58,14 @@ export const features = [
     description:
       "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
     link: "/",
+    streamId: "1"
   },
   {
     title: "Feature 2",
     description:
       "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
     link: "/",
+    streamId: "2"
   },
   {
     title: "Feature 3",
@@ -71,6 +73,7 @@ export const features = [
       "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
     image: "https://randomuser.me/api/portraits/men/3.jpg",
     link: "/",
+    streamId: "3"
   },
   {
     title: "Feature 4",
@@ -78,151 +81,178 @@ export const features = [
       "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
     image: "https://randomuser.me/api/portraits/men/3.jpg",
     link: "/",
+    streamId: "4"
   },
   {
     title: "Feature 5",
     description:
       "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
+      streamId: "5"
   },
   {
     title: "Feature 6",
     description:
       "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
     link: "/",
+    streamId: "6"
   },
   {
     title: "Feature 7",
     description:
       "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
     link: "/",
+    streamId: "7"
   },
   {
     title: "Feature 8",
     description:
       "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
     link: "/",
+    streamId: "8"
   },
   {
     title: "Feature 9",
     description:
       "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
     link: "/",
+    streamId: "9"
   },
   {
     title: "Feature 10",
     description:
       "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
     link: "/",
+    streamId: "10"
   },
   {
     title: "Feature 11",
     description:
       "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
     link: "/",
+    streamId: "11"
   },
   {
     title: "Feature 12",
     description:
       "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
     link: "/",
+    streamId: "12"
   },
   {
     title: "Feature 13",
     description:
       "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
     link: "/",
+    streamId: "13"
   },
   {
     title: "Feature 14",
     description:
       "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
     link: "/",
+    streamId: "14"
   },
   {
     title: "Feature 15",
     description:
       "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
     link: "/",
+    streamId: "15"
   },
   {
     title: "Feature 16",
     description:
       "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
     link: "/",
+    streamId: "16"
   },
   {
     title: "Feature 17",
     description:
       "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
     link: "/",
+    streamId: "17"
   },
   {
     title: "Feature 18",
     description:
       "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
     link: "/",
+    streamId: "18"
   },
   {
     title: "Feature 19",
     description:
       "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
     link: "/",
+    streamId: "19"
   },
   {
     title: "Feature 20",
     description:
       "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
     link: "/",
+    streamId: "20"
   },
   {
     title: "Feature 21",
     description:
       "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
+    streamId: "21"
   },
   {
     title: "Feature 22",
     description:
       "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
+    streamId: "22"
   },
   {
     title: "Feature 23",
     description:
       "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
+    streamId: "23"
   },
   {
     title: "Feature 24",
     description:
       "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
+    streamId: "24"
   },
   {
     title: "Feature 25",
     description:
       "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
+    streamId: "25"
   },
   {
     title: "Feature 26",
     description:
       "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
+    streamId: "26"
   },
   {
     title: "Feature 27",
     description:
       "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
+    streamId: "27"
   },
   {
     title: "Feature 28",
     description:
       "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
+    streamId: "28"
   },
   {
     title: "Feature 29",
     description:
       "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
+    streamId: "29"
   },
   {
     title: "Feature 30",
     description:
       "Amet praesentium deserunt ex commodi tempore fuga voluptatem. Sit, sapiente.",
+    streamId: "30"
   },
 ];
 
