@@ -13,9 +13,11 @@ export type MainNavItem = NavItem;
 
 export type Post = {
   title: string;
-  description: string;
-  image?: string;
+  body: string;
+  imageid?: string;
+  imageId?: string;
   streamId: string;
+  profile?: Profile;
 }
 
 export type SidebarNavItem = {
@@ -39,6 +41,7 @@ export type Profile = {
   username: string;
   stream_id?: string;
   imageId: string;
+  imageid?: string;
   description: string;
   controller?: string;
 }

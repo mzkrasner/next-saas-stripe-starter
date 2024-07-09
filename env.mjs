@@ -30,6 +30,8 @@ export const env = createEnv({
     NEXT_PUBLIC_COMMENT_ID: z.string().min(1),
     NEXT_PUBLIC_PROFILE_ID: z.string().min(1),
     NEXT_PUBLIC_CONTEXT_ID: z.string().min(1),
+    NEXT_PUBLIC_GRAPHQL_ENDPOINT: z.string().url(),
+
   },
   runtimeEnv: {
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
@@ -41,6 +43,7 @@ export const env = createEnv({
     NEXT_PUBLIC_COMMENT_ID: process.env.NEXT_PUBLIC_COMMENT_ID,
     NEXT_PUBLIC_PROFILE_ID: process.env.NEXT_PUBLIC_PROFILE_ID,
     NEXT_PUBLIC_CONTEXT_ID: process.env.NEXT_PUBLIC_CONTEXT_ID,
+    NEXT_PUBLIC_GRAPHQL_ENDPOINT: process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT,
     // GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
     // GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
     // GITHUB_OAUTH_TOKEN: process.env.GITHUB_OAUTH_TOKEN,

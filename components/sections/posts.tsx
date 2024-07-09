@@ -5,30 +5,80 @@ import Image from "next/image";
 import Link from "next/link";
 import { type Post } from "@/types";
 import { set } from "date-fns";
-
+import { MediaRenderer, useStorageUpload } from "@thirdweb-dev/react";
+import { useODB } from "@/app/context/OrbisContext";
+import { useAccount } from "wagmi";
+import { env } from "@/env.mjs";
 import { features, testimonials } from "@/config/landing";
 import { Button } from "@/components/ui/button";
 import { HeaderSection } from "@/components/shared/header-section";
 import { Icons } from "@/components/shared/icons";
 import MaxWidthWrapper from "@/components/shared/max-width-wrapper";
 
+const CONTEXT_ID = env.NEXT_PUBLIC_CONTEXT_ID ?? "";
+const POST_ID = env.NEXT_PUBLIC_POST_ID ?? "";
+const GRAPHQL_ENDPOINT = env.NEXT_PUBLIC_GRAPHQL_ENDPOINT ?? "";
+
 export default function Posts() {
-  const [allMessages, setAllMessages] = useState<Post[]>(features);
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [allMessages, setAllMessages] = useState<Post[] | undefined>(undefined);
+  const [posts, setPosts] = useState<Post[] | undefined>();
+  const { orbis } = useODB();
+  const { address } = useAccount();
   const [pagination, setPagination] = useState<number>(1);
+  const { mutateAsync: upload } = useStorageUpload();
+
+  const getPosts = async (): Promise<void> => {
+    try {
+      const user = await orbis.getConnectedUser();
+      if (user) {
+        const postQuery = await fetch(GRAPHQL_ENDPOINT, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            query: `
+              query {
+                forum_post {
+                  body
+                  title
+                  imageid
+                  profile {
+                    name
+                    username
+                    description
+                    imageid
+                  }
+                }
+              }
+            `,
+          }),
+        });
+        const postResult = await postQuery.json() as { data: { forum_post: Post[] } };
+        console.log(postResult);
+        if (postResult.data.forum_post) {
+          setAllMessages(postResult.data.forum_post);
+          setPosts(postResult.data.forum_post.slice(0, 10));
+        }
+      }
+    } catch (error) {
+      console.error(error);
+      return undefined;
+    }
+  };
 
   const alterPosts = (direction: string) => {
     try {
       switch (direction) {
         case "next":
           setPagination(pagination + 1);
-          setPosts(allMessages.slice(pagination * 10, pagination * 10 + 10));
-          console.log(allMessages.slice(pagination * 10, pagination * 10 + 10));
+          setPosts(allMessages?.slice(pagination * 10, pagination * 10 + 10));
+          console.log(allMessages?.slice(pagination * 10, pagination * 10 + 10));
           break;
         case "previous":
           setPagination(pagination - 1);
           setPosts(
-            allMessages.slice((pagination - 2) * 10, (pagination - 1) * 10),
+            allMessages?.slice((pagination - 2) * 10, (pagination - 1) * 10),
           );
           break;
         default:
@@ -40,9 +90,7 @@ export default function Posts() {
   };
 
   useEffect(() => {
-    setAllMessages(features);
-    const sliced = features.slice(0, 10);
-    setPosts(sliced);
+    void getPosts();
     return () => {
       setAllMessages([]);
       setPosts([]);
@@ -54,7 +102,7 @@ export default function Posts() {
       <div className="pb-6 pt-12">
         <MaxWidthWrapper>
           <div className="mt-12 grid gap-3 sm:grid-cols-1 lg:grid-cols-1">
-            {posts.map((post, index) => (
+            {posts?.length && posts.map((post, index) => (
               <div key={post.title} className="relative grow">
                 <div className="group relative grow overflow-hidden rounded-2xl border bg-background p-5 md:p-8">
                   <div
@@ -63,18 +111,16 @@ export default function Posts() {
                   />
                   <div className="relative">
                     <div className="relative flex items-center gap-3">
-                      {testimonials[index] && (
+                      {post.profile?.imageid && (
                         <>
-                          <Image
-                            width={30}
-                            height={30}
-                            src={testimonials[index].image}
-                            alt={testimonials[index].name}
+                          <MediaRenderer src={post.profile?.imageid} 
+                            width="2rem"
+                            height="2rem"
                             className="rounded-full"
                           />
                           <Link href="#">
                             <p className="relative text-sm font-semibold text-foreground hover:text-destructive">
-                              {testimonials[index].name}
+                              {post.profile.username}
                             </p>
                           </Link>
                         </>
@@ -84,20 +130,17 @@ export default function Posts() {
                       <p className="mt-6 pb-6 text-2xl font-bold">
                         {post.title}
                       </p>
-                      {post.image && (
+                      {post.imageid && (
                         <div className="relative mb-6">
-                          <Image
-                            className="relative"
-                            src={post.image}
-                            width={600}
-                            height={400}
-                            alt={post.title}
-                            priority
+                          <MediaRenderer src={post.imageid} 
+                            width="50%"
+                            height="50%"
+                            className="rounded-xl"
                           />
                         </div>
                       )}
                       <p className="relative mt-6 pb-6 text-muted-foreground">
-                        {post.description}
+                        {post.body}
                       </p>
                     </div>
                     <div className="relative -mb-5 flex gap-3 border-t border-muted py-4 md:-mb-7">

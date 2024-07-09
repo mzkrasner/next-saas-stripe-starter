@@ -134,8 +134,8 @@ export function ProfileModules({
             <div className="relative flex-col items-center justify-center">
               {file && (
                 <Image
-                  width={400}
-                  height={60}
+                  width={500}
+                  height={100}
                   src={URL.createObjectURL(file)}
                   alt={"Alt tag goes here"}
                   className="hover:scale-105"
@@ -234,7 +234,10 @@ export function ProfileModules({
               variant={"default"}
               className="mt-4 w-1/3"
               rounded="full"
-              onClick={saveProfile}
+              onClick={(e) => {
+                e.preventDefault();
+                void saveProfile();
+              }}
             >
               Save Profile
             </Button>
