@@ -22,7 +22,7 @@ export type Post = {
 }
 
 export type Comment = {
-  body: string;
+  comment: string;
   stream_id: string;
   profile?: Profile;
 }

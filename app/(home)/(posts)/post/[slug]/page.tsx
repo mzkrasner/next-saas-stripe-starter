@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { type Post } from "@/types";
 import { MediaRenderer, useStorageUpload } from "@thirdweb-dev/react";
 import { allPosts } from "contentlayer/generated";
-
+import TextareaAutosize from "react-textarea-autosize";
 import { Button } from "@/components/ui/button";
 import { Mdx } from "@/components/content/mdx-components";
 import { Icons } from "@/components/shared/icons";
@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { set } from "date-fns";
 import { useAccount } from "wagmi";
 
 import { env } from "@/env.mjs";
@@ -29,6 +30,8 @@ import { DashboardTableOfContents } from "@/components/shared/toc";
 import { useODB } from "@/app/context/OrbisContext";
 
 const GRAPHQL_ENDPOINT = env.NEXT_PUBLIC_GRAPHQL_ENDPOINT ?? "";
+const CONTEXT_ID = env.NEXT_PUBLIC_CONTEXT_ID ?? "";
+const COMMENT_ID = env.NEXT_PUBLIC_COMMENT_ID ?? "";
 
 export default function PostPage({
   params,
@@ -39,10 +42,40 @@ export default function PostPage({
 }) {
   const [message, setMessage] = useState<Post | undefined>(undefined);
   const { orbis } = useODB();
-  const { address } = useAccount();
+  const [poststream, setPostStream] = useState<string | undefined>(undefined);
+  const [comment, setComment] = useState<string | undefined>(undefined);
+
+  const saveComment = async (): Promise<void> => {
+    try {
+      const user = await orbis.getConnectedUser();
+      console.log(comment)
+      if (user) {
+        const updatequery = await orbis
+          .insert(COMMENT_ID)
+          .value({
+            comment,
+            postStream: poststream,
+          })
+          .context(CONTEXT_ID)
+          .run();
+
+        console.log(updatequery);
+        
+        if (updatequery.content) {
+          setComment(undefined);
+          alert("Created Comment.");
+          await getPost(poststream!);
+        }
+      }
+    } catch (error) {
+      console.error(error);
+      return undefined;
+    }
+  };
 
   const getPost = async (stream_id: string): Promise<void> => {
     try {
+      setPostStream(stream_id);
       const user = await orbis.getConnectedUser();
       if (user) {
         console.log(stream_id);
@@ -136,28 +169,35 @@ export default function PostPage({
                       <label htmlFor="comment" className="sr-only">
                         Reply to this post
                       </label>
-                      <textarea
-                        id="post-body"
+                      <TextareaAutosize
+                        id="comment-body"
+                        onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+                          setComment(e.target.value);
+                        }}
                         rows={3}
-                        className="w-full border-0 bg-white px-0 text-sm text-gray-900 focus:ring-0 dark:bg-gray-800 dark:text-white dark:placeholder:text-gray-400"
+                        className="min-h-[50px] w-full border-0 bg-white px-0 text-sm text-gray-900 focus:ring-0 dark:bg-gray-800 dark:text-white dark:placeholder:text-gray-400"
                         placeholder="Reply to this post"
                         required
                       />
                     </div>
                     <div className="flex items-center justify-between border-t px-3 py-2 dark:border-gray-600">
-                      <button
+                      <Button
                         type="submit"
                         className="inline-flex items-center rounded-lg bg-blue-700 px-4 py-2.5 text-center text-xs font-medium text-white hover:bg-blue-800 focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          void saveComment();
+                        }}
                       >
-                        Send
-                      </button>
+                        Reply
+                      </Button>
                     </div>
                   </div>
                 </form>
               </div>
             </div>
-            {message.comments.map((post, index) => (
-              <div key={post.title} className="relative grow">
+            {message.comments?.map((comment, index) => (
+              <div key={comment.comment} className="relative grow">
                 <div className="group relative grow overflow-hidden rounded-2xl border bg-background p-5 md:p-8">
                   <div
                     aria-hidden="true"
@@ -165,28 +205,23 @@ export default function PostPage({
                   />
                   <div className="relative">
                     <div className="relative flex items-center gap-3">
-                      {testimonials[index] && (
-                        <>
-                          <Image
-                            width={30}
-                            height={30}
-                            src={testimonials[index].image}
-                            alt={testimonials[index].name}
-                            className="rounded-full"
-                          />
-                          <div>
-                            <p className="text-sm font-medium text-muted-foreground">
-                              {testimonials[index].name}
-                            </p>
-                            <p className="text-xs text-muted-foreground">
-                              {new Date().toLocaleString()}
-                            </p>
-                          </div>
-                        </>
-                      )}
+                      <MediaRenderer
+                        src={comment.profile?.imageid}
+                        width="2rem"
+                        height="2rem"
+                        className="rounded-full"
+                      />
+                      <div>
+                        <p className="text-sm font-medium text-muted-foreground">
+                          {comment.profile?.username}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          {new Date().toLocaleString()}
+                        </p>
+                      </div>
                     </div>
                     <p className="mt-4 text-base text-muted-foreground">
-                      {post.description}
+                      {comment.comment}
                     </p>
                   </div>
                 </div>

@@ -4,7 +4,7 @@ import { env } from "@/env.mjs";
 const site_url = env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
 
 export const siteConfig: SiteConfig = {
-  name: "SaaS Starter",
+  name: "DeForum",
   description:
     "Get your project off to an explosive start with SaaS Starter! Harness the power of Next.js 14, Prisma, Neon, Auth.js v5, Resend, React Email, Shadcn/ui and Stripe to build your next big thing.",
   url: site_url,
@@ -21,9 +21,8 @@ export const footerLinks: SidebarNavItem[] = [
     title: "Company",
     items: [
       { title: "About", href: "#" },
-      { title: "Enterprise", href: "#" },
-      { title: "Terms", href: "/terms" },
-      { title: "Privacy", href: "/privacy" },
+      { title: "Terms", href: "#" },
+      { title: "Privacy", href: "#" },
     ],
   },
   {
