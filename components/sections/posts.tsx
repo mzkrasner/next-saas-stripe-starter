@@ -43,6 +43,7 @@ export default function Posts() {
                   body
                   title
                   imageid
+                  stream_id
                   profile {
                     name
                     username
@@ -151,7 +152,7 @@ export default function Posts() {
                         className="px-4"
                       >
                         <Link
-                          href={`/post/${post.streamId}`}
+                          href={`/post/${post.stream_id}`}
                           className="flex items-center gap-2"
                         >
                           <span>Thread</span>

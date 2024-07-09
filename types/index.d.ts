@@ -16,7 +16,14 @@ export type Post = {
   body: string;
   imageid?: string;
   imageId?: string;
-  streamId: string;
+  stream_id: string;
+  profile?: Profile;
+  comments?: Comment[];
+}
+
+export type Comment = {
+  body: string;
+  stream_id: string;
   profile?: Profile;
 }
 

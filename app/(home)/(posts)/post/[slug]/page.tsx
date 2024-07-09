@@ -2,6 +2,7 @@
 
 import { notFound } from "next/navigation";
 import { type Post } from "@/types";
+import { MediaRenderer, useStorageUpload } from "@thirdweb-dev/react";
 import { allPosts } from "contentlayer/generated";
 
 import { Button } from "@/components/ui/button";
@@ -14,7 +15,9 @@ import { useEffect, useState } from "react";
 import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { useAccount } from "wagmi";
 
+import { env } from "@/env.mjs";
 import { BLOG_CATEGORIES } from "@/config/blog";
 import { features, testimonials } from "@/config/landing";
 import { getTableOfContents } from "@/lib/toc";
@@ -23,6 +26,9 @@ import { buttonVariants } from "@/components/ui/button";
 import Author from "@/components/content/author";
 import MaxWidthWrapper from "@/components/shared/max-width-wrapper";
 import { DashboardTableOfContents } from "@/components/shared/toc";
+import { useODB } from "@/app/context/OrbisContext";
+
+const GRAPHQL_ENDPOINT = env.NEXT_PUBLIC_GRAPHQL_ENDPOINT ?? "";
 
 export default function PostPage({
   params,
@@ -32,13 +38,65 @@ export default function PostPage({
   };
 }) {
   const [message, setMessage] = useState<Post | undefined>(undefined);
-  const [comments, setAllComments] = useState<Post[]>(features);
+  const { orbis } = useODB();
+  const { address } = useAccount();
+
+  const getPost = async (stream_id: string): Promise<void> => {
+    try {
+      const user = await orbis.getConnectedUser();
+      if (user) {
+        console.log(stream_id);
+        const postQuery = await fetch(GRAPHQL_ENDPOINT, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            query: `
+              query {
+                forum_post (filter: {
+                  stream_id_eq: "${stream_id}"
+                }) {
+                  body
+                  title
+                  imageid
+                  stream_id
+                  profile {
+                    name
+                    username
+                    description
+                    imageid
+                  }
+                  comments {
+                    comment
+                    profile {
+                      name
+                      username
+                      description
+                      imageid
+                    }
+                  }
+                }
+              }
+            `,
+          }),
+        });
+        const postResult = (await postQuery.json()) as {
+          data: { forum_post: Post[] };
+        };
+        console.log(postResult);
+        if (postResult.data.forum_post) {
+          setMessage(postResult.data.forum_post[0]);
+        }
+      }
+    } catch (error) {
+      console.error(error);
+      return undefined;
+    }
+  };
 
   useEffect(() => {
-    const post = features.find((post) => post.streamId === params.slug);
-    console.log(post);
-    setAllComments(features);
-    setMessage(post);
+    void getPost(params.slug);
   }, [params.slug]);
 
   return (
@@ -57,20 +115,18 @@ export default function PostPage({
             <h1 className="font-heading text-3xl text-foreground sm:text-4xl">
               {message.title}
             </h1>
-            {message.image && (
+            {message.imageid && (
               <div className="relative mb-6">
-                <Image
-                  className="relative"
-                  src={message.image}
-                  width={600}
-                  height={400}
-                  alt={message.title}
-                  priority
+                <MediaRenderer
+                  src={message.imageid}
+                  width="2rem"
+                  height="2rem"
+                  className="rounded-full"
                 />
               </div>
             )}
             <p className="text-base text-muted-foreground md:text-lg">
-              {message.description}
+              {message.body}
             </p>
             <div className="mt-12 grid gap-5 bg-inherit lg:grid-cols-1">
               <div className="relative flex w-full items-center justify-center">
@@ -100,7 +156,7 @@ export default function PostPage({
                 </form>
               </div>
             </div>
-            {comments.map((post, index) => (
+            {message.comments.map((post, index) => (
               <div key={post.title} className="relative grow">
                 <div className="group relative grow overflow-hidden rounded-2xl border bg-background p-5 md:p-8">
                   <div
