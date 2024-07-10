@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import Link from "next/link";
 import { useSelectedLayoutSegment } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -18,6 +18,7 @@ import { DocsSearch } from "@/components/docs/search";
 import { ModalContext } from "@/components/modals/providers";
 import { Icons } from "@/components/shared/icons";
 import MaxWidthWrapper from "@/components/shared/max-width-wrapper";
+import {useAccount} from "wagmi"
 
 import { UserAccountNav } from "./user-account-nav";
 
@@ -30,7 +31,7 @@ export function NavBar({ scroll = false }: NavBarProps) {
   const scrolled = useScroll(50);
   const { data: session, status } = useSession();
   const { setShowSignInModal } = useContext(ModalContext);
-
+  const {address} = useAccount();
   const selectedLayout = useSelectedLayoutSegment();
   const admin = selectedLayout === "admin";
   const dashBoard = selectedLayout === "dashboard";
@@ -43,6 +44,13 @@ export function NavBar({ scroll = false }: NavBarProps) {
 
   const links =
     (selectedLayout && configMap[selectedLayout]) || marketingConfig.mainNav;
+
+  useEffect(() => {
+    if (!address) {
+      localStorage.removeItem("orbis:session");
+    }
+  }
+  , [address]);
 
   return (
     <header
