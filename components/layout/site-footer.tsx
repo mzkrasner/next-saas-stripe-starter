@@ -32,7 +32,7 @@ export function SiteFooter({ className }: React.HTMLAttributes<HTMLElement>) {
           </div>
         ))}
         <div className="flex flex-col items-end md:col-span-2">
-          {/* <NewsletterForm /> */}
+          <ModeToggle />
         </div>
       </div>
     </footer>

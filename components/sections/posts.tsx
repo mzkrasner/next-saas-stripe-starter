@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { type Post } from "@/types";
 import { MediaRenderer } from "@thirdweb-dev/react";
+
 import { env } from "@/env.mjs";
 import { features } from "@/config/landing";
 import { Button } from "@/components/ui/button";
@@ -52,8 +53,8 @@ export default function Posts() {
         };
         console.log(postResult);
         if (postResult.data.forum_post) {
-          setAllMessages(postResult.data.forum_post);
           setPosts(postResult.data.forum_post.slice(0, 10));
+          setAllMessages(postResult.data.forum_post);
         }
       }
     } catch (error) {
@@ -99,9 +100,10 @@ export default function Posts() {
       <div className="pb-6 pt-12">
         <MaxWidthWrapper>
           <div className="mt-12 grid gap-3 sm:grid-cols-1 lg:grid-cols-1">
-            {posts?.length &&
+            {posts &&
+              posts.length &&
               posts.map((post, index) => (
-                <div key={post.title} className="relative grow">
+                <div key={`${post.title}-${index}`} className="relative grow">
                   <div className="group relative grow overflow-hidden rounded-2xl border bg-background p-5 md:p-8">
                     <div
                       aria-hidden="true"
@@ -167,7 +169,7 @@ export default function Posts() {
               Showing Posts {pagination * 10 - 9} - {pagination * 10}
             </p>
             <div className="mb-6 flex justify-center gap-3">
-              {pagination * 10 < features.length && (
+              {allMessages && pagination * 10 < allMessages.length && (
                 <Button
                   onClick={() => alterPosts("next")}
                   variant="default"
