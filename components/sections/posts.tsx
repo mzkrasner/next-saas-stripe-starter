@@ -36,6 +36,7 @@ export default function Posts() {
                   title
                   imageid
                   stream_id
+                  created
                   profile {
                     name
                     username
@@ -51,6 +52,10 @@ export default function Posts() {
         const postResult = (await postQuery.json()) as {
           data: { forum_post_2: Post[] };
         };
+        // order by created date
+        postResult.data.forum_post_2.sort(
+          (a, b) => new Date(b.created).getTime() - new Date(a.created).getTime(),
+        );
         console.log(postResult);
         if (postResult.data.forum_post_2) {
           setPosts(postResult.data.forum_post_2.slice(0, 10));
@@ -127,6 +132,9 @@ export default function Posts() {
                         )}
                       </div>
                       <div className="relative grow">
+                        <p className="font-italic mt-6 pb-6 text-sm">
+                          created at {new Date(post.created).toLocaleString()}
+                        </p>
                         <p className="mt-6 pb-6 text-2xl font-bold">
                           {post.title}
                         </p>

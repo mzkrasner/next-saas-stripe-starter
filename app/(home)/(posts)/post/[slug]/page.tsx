@@ -40,7 +40,7 @@ export default function PostPage({
           .insert(COMMENT_ID)
           .value({
             comment,
-            postStream: poststream,
+            poststream: poststream,
           })
           .context(CONTEXT_ID)
           .run();

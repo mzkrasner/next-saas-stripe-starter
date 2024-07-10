@@ -16,6 +16,7 @@ export type Post = {
   body: string;
   imageid?: string;
   stream_id: string;
+  created: string;
   profile?: Profile;
   comments?: Comment[];
 }

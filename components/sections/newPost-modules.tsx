@@ -69,12 +69,14 @@ export function PostModules() {
           imageUrl = await uploadToIpfs();
         }
 
+        const created = new Date().toISOString();
         const createQuery = await orbis
           .insert(POST_ID)
           .value({
             title,
             body,
             imageid: imageUrl ? imageUrl : "",
+            created,
           })
           .context(CONTEXT_ID)
           .run();
@@ -89,6 +91,7 @@ export function PostModules() {
             imageid: imageUrl ? imageUrl : "",
             stream_id: createQuery.content.stream_id,
             profile,
+            created
           });
         }
       }
