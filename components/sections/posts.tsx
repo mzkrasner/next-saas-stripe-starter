@@ -1,31 +1,23 @@
 "use client";
 
-import { use, useEffect, useState } from "react";
-import Image from "next/image";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { type Post } from "@/types";
-import { set } from "date-fns";
-import { MediaRenderer, useStorageUpload } from "@thirdweb-dev/react";
-import { useODB } from "@/app/context/OrbisContext";
-import { useAccount } from "wagmi";
+import { MediaRenderer } from "@thirdweb-dev/react";
 import { env } from "@/env.mjs";
-import { features, testimonials } from "@/config/landing";
+import { features } from "@/config/landing";
 import { Button } from "@/components/ui/button";
-import { HeaderSection } from "@/components/shared/header-section";
 import { Icons } from "@/components/shared/icons";
 import MaxWidthWrapper from "@/components/shared/max-width-wrapper";
+import { useODB } from "@/app/context/OrbisContext";
 
-const CONTEXT_ID = env.NEXT_PUBLIC_CONTEXT_ID ?? "";
-const POST_ID = env.NEXT_PUBLIC_POST_ID ?? "";
 const GRAPHQL_ENDPOINT = env.NEXT_PUBLIC_GRAPHQL_ENDPOINT ?? "";
 
 export default function Posts() {
   const [allMessages, setAllMessages] = useState<Post[] | undefined>(undefined);
   const [posts, setPosts] = useState<Post[] | undefined>();
   const { orbis } = useODB();
-  const { address } = useAccount();
   const [pagination, setPagination] = useState<number>(1);
-  const { mutateAsync: upload } = useStorageUpload();
 
   const getPosts = async (): Promise<void> => {
     try {
@@ -55,7 +47,9 @@ export default function Posts() {
             `,
           }),
         });
-        const postResult = await postQuery.json() as { data: { forum_post: Post[] } };
+        const postResult = (await postQuery.json()) as {
+          data: { forum_post: Post[] };
+        };
         console.log(postResult);
         if (postResult.data.forum_post) {
           setAllMessages(postResult.data.forum_post);
@@ -74,7 +68,9 @@ export default function Posts() {
         case "next":
           setPagination(pagination + 1);
           setPosts(allMessages?.slice(pagination * 10, pagination * 10 + 10));
-          console.log(allMessages?.slice(pagination * 10, pagination * 10 + 10));
+          console.log(
+            allMessages?.slice(pagination * 10, pagination * 10 + 10),
+          );
           break;
         case "previous":
           setPagination(pagination - 1);
@@ -103,67 +99,70 @@ export default function Posts() {
       <div className="pb-6 pt-12">
         <MaxWidthWrapper>
           <div className="mt-12 grid gap-3 sm:grid-cols-1 lg:grid-cols-1">
-            {posts?.length && posts.map((post, index) => (
-              <div key={post.title} className="relative grow">
-                <div className="group relative grow overflow-hidden rounded-2xl border bg-background p-5 md:p-8">
-                  <div
-                    aria-hidden="true"
-                    className="absolute inset-0 aspect-video -translate-y-1/2 rounded-full border bg-gradient-to-b from-purple-500/80 to-white opacity-25 blur-2xl duration-300 group-hover:-translate-y-1/4 dark:from-white dark:to-white dark:opacity-5 dark:group-hover:opacity-10"
-                  />
-                  <div className="relative">
-                    <div className="relative flex items-center gap-3">
-                      {post.profile?.imageid && (
-                        <>
-                          <MediaRenderer src={post.profile?.imageid} 
-                            width="2rem"
-                            height="2rem"
-                            className="rounded-full"
-                          />
-                          <Link href="#">
-                            <p className="relative text-sm font-semibold text-foreground hover:text-destructive">
-                              {post.profile.username}
-                            </p>
-                          </Link>
-                        </>
-                      )}
-                    </div>
-                    <div className="relative grow">
-                      <p className="mt-6 pb-6 text-2xl font-bold">
-                        {post.title}
-                      </p>
-                      {post.imageid && (
-                        <div className="relative mb-6">
-                          <MediaRenderer src={post.imageid} 
-                            width="50%"
-                            height="50%"
-                            className="rounded-xl"
-                          />
-                        </div>
-                      )}
-                      <p className="relative mt-6 pb-6 text-muted-foreground">
-                        {post.body}
-                      </p>
-                    </div>
-                    <div className="relative -mb-5 flex gap-3 border-t border-muted py-4 md:-mb-7">
-                      <Button
-                        variant="secondary"
-                        size="sm"
-                        rounded="xl"
-                        className="px-4"
-                      >
-                        <Link
-                          href={`/post/${post.stream_id}`}
-                          className="flex items-center gap-2"
+            {posts?.length &&
+              posts.map((post, index) => (
+                <div key={post.title} className="relative grow">
+                  <div className="group relative grow overflow-hidden rounded-2xl border bg-background p-5 md:p-8">
+                    <div
+                      aria-hidden="true"
+                      className="absolute inset-0 aspect-video -translate-y-1/2 rounded-full border bg-gradient-to-b from-purple-500/80 to-white opacity-25 blur-2xl duration-300 group-hover:-translate-y-1/4 dark:from-white dark:to-white dark:opacity-5 dark:group-hover:opacity-10"
+                    />
+                    <div className="relative">
+                      <div className="relative flex items-center gap-3">
+                        {post.profile?.imageid && (
+                          <>
+                            <MediaRenderer
+                              src={post.profile?.imageid}
+                              width="2rem"
+                              height="2rem"
+                              className="rounded-full"
+                            />
+                            <Link href="#">
+                              <p className="relative text-sm font-semibold text-foreground hover:text-destructive">
+                                {post.profile.username}
+                              </p>
+                            </Link>
+                          </>
+                        )}
+                      </div>
+                      <div className="relative grow">
+                        <p className="mt-6 pb-6 text-2xl font-bold">
+                          {post.title}
+                        </p>
+                        {post.imageid && (
+                          <div className="relative mb-6">
+                            <MediaRenderer
+                              src={post.imageid}
+                              width="50%"
+                              height="50%"
+                              className="rounded-xl"
+                            />
+                          </div>
+                        )}
+                        <p className="relative mt-6 pb-6 text-muted-foreground">
+                          {post.body}
+                        </p>
+                      </div>
+                      <div className="relative -mb-5 flex gap-3 border-t border-muted py-4 md:-mb-7">
+                        <Button
+                          variant="secondary"
+                          size="sm"
+                          rounded="xl"
+                          className="px-4"
                         >
-                          <span>Thread</span>
-                          <Icons.arrowUpRight className="size-4" />
-                        </Link>
-                      </Button>
+                          <Link
+                            href={`/post/${post.stream_id}`}
+                            className="flex items-center gap-2"
+                          >
+                            <span>Thread</span>
+                            <Icons.arrowUpRight className="size-4" />
+                          </Link>
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              ))}
             <p className="mt-6 text-center text-muted-foreground">
               Showing Posts {pagination * 10 - 9} - {pagination * 10}
             </p>

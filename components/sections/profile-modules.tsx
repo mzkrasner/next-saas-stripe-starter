@@ -2,23 +2,15 @@
 
 import { useContext, useEffect, useState } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { UserSubscriptionPlan } from "@/types";
 import { MediaRenderer, useStorageUpload } from "@thirdweb-dev/react";
-import { set } from "date-fns";
 import TextareaAutosize from "react-textarea-autosize";
 import { useAccount } from "wagmi";
 
 import { env } from "@/env.mjs";
-import { SubscriptionPlan, type Profile } from "@/types/index";
-import { pricingData } from "@/config/subscriptions";
-import { cn } from "@/lib/utils";
-import { Button, buttonVariants } from "@/components/ui/button";
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { BillingFormButton } from "@/components/forms/billing-form-button";
+import { type Profile } from "@/types/index";
+import { Button } from "@/components/ui/button";
 import { ModalContext } from "@/components/modals/providers";
-import { HeaderSection } from "@/components/shared/header-section";
-import { Icons } from "@/components/shared/icons";
 import MaxWidthWrapper from "@/components/shared/max-width-wrapper";
 import { useODB } from "@/app/context/OrbisContext";
 
@@ -30,11 +22,7 @@ interface PricingCardsProps {
   subscriptionPlan?: UserSubscriptionPlan;
 }
 
-export function ProfileModules({
-  userId,
-  subscriptionPlan,
-}: PricingCardsProps) {
-  const { setShowSignInModal } = useContext(ModalContext);
+export function ProfileModules() {
   const [about, setAbout] = useState<string | undefined>(undefined);
   const [name, setName] = useState<string | undefined>(undefined);
   const [username, setUsername] = useState<string | undefined>(undefined);
