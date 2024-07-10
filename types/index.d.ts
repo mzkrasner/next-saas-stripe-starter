@@ -15,7 +15,6 @@ export type Post = {
   title: string;
   body: string;
   imageid?: string;
-  imageId?: string;
   stream_id: string;
   profile?: Profile;
   comments?: Comment[];
@@ -51,6 +50,7 @@ export type Profile = {
   imageid?: string;
   description: string;
   controller?: string;
+  posts?: Post[];
 }
 
 export type SiteConfig = {

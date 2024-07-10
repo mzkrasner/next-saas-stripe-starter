@@ -1,33 +1,19 @@
 "use client";
 
-import { notFound } from "next/navigation";
 import { type Post } from "@/types";
-import { MediaRenderer, useStorageUpload } from "@thirdweb-dev/react";
-import { allPosts } from "contentlayer/generated";
+import { MediaRenderer } from "@thirdweb-dev/react";
 import TextareaAutosize from "react-textarea-autosize";
 import { Button } from "@/components/ui/button";
-import { Mdx } from "@/components/content/mdx-components";
-import { Icons } from "@/components/shared/icons";
 
 import "@/styles/mdx.css";
 
 import { useEffect, useState } from "react";
-import { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
-import { set } from "date-fns";
-import { useAccount } from "wagmi";
 
 import { env } from "@/env.mjs";
-import { BLOG_CATEGORIES } from "@/config/blog";
-import { features, testimonials } from "@/config/landing";
-import { getTableOfContents } from "@/lib/toc";
-import { cn, constructMetadata, formatDate } from "@/lib/utils";
-import { buttonVariants } from "@/components/ui/button";
-import Author from "@/components/content/author";
+import { formatDate } from "@/lib/utils";
 import MaxWidthWrapper from "@/components/shared/max-width-wrapper";
-import { DashboardTableOfContents } from "@/components/shared/toc";
 import { useODB } from "@/app/context/OrbisContext";
+import Link from "next/link";
 
 const GRAPHQL_ENDPOINT = env.NEXT_PUBLIC_GRAPHQL_ENDPOINT ?? "";
 const CONTEXT_ID = env.NEXT_PUBLIC_CONTEXT_ID ?? "";
@@ -87,7 +73,7 @@ export default function PostPage({
           body: JSON.stringify({
             query: `
               query {
-                forum_post (filter: {
+                forum_post_2 (filter: {
                   stream_id_eq: "${stream_id}"
                 }) {
                   body
@@ -107,6 +93,7 @@ export default function PostPage({
                       username
                       description
                       imageid
+                      stream_id
                     }
                   }
                 }
@@ -115,11 +102,11 @@ export default function PostPage({
           }),
         });
         const postResult = (await postQuery.json()) as {
-          data: { forum_post: Post[] };
+          data: { forum_post_2: Post[] };
         };
         console.log(postResult);
-        if (postResult.data.forum_post) {
-          setMessage(postResult.data.forum_post[0]);
+        if (postResult.data.forum_post_2) {
+          setMessage(postResult.data.forum_post_2[0]);
         }
       }
     } catch (error) {
@@ -135,7 +122,7 @@ export default function PostPage({
   return (
     <>
       {message && (
-        <MaxWidthWrapper className="pt-6 md:pt-10">
+        <MaxWidthWrapper className="mb-16 pt-6 md:pt-10">
           <div className="flex flex-col space-y-4">
             <div className="flex items-center space-x-4">
               <time
@@ -196,7 +183,7 @@ export default function PostPage({
                 </form>
               </div>
             </div>
-            {message.comments?.map((comment, index) => (
+            {message.comments?.map((comment) => (
               <div key={comment.comment} className="relative grow">
                 <div className="group relative grow overflow-hidden rounded-2xl border bg-background p-5 md:p-8">
                   <div
@@ -212,9 +199,11 @@ export default function PostPage({
                         className="rounded-full"
                       />
                       <div>
-                        <p className="text-sm font-medium text-muted-foreground">
+                        <Link href={`/users/${comment.profile?.stream_id}`} >
+                        <p className="text-sm font-medium text-muted-foreground hover:text-destructive">
                           {comment.profile?.username}
                         </p>
+                        </Link>
                         <p className="text-xs text-muted-foreground">
                           {new Date().toLocaleString()}
                         </p>

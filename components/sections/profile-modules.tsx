@@ -6,21 +6,14 @@ import { UserSubscriptionPlan } from "@/types";
 import { MediaRenderer, useStorageUpload } from "@thirdweb-dev/react";
 import TextareaAutosize from "react-textarea-autosize";
 import { useAccount } from "wagmi";
-
 import { env } from "@/env.mjs";
 import { type Profile } from "@/types/index";
 import { Button } from "@/components/ui/button";
-import { ModalContext } from "@/components/modals/providers";
 import MaxWidthWrapper from "@/components/shared/max-width-wrapper";
 import { useODB } from "@/app/context/OrbisContext";
 
 const PROFILE_ID = env.NEXT_PUBLIC_PROFILE_ID ?? "";
 const CONTEXT_ID = env.NEXT_PUBLIC_CONTEXT_ID ?? "";
-
-interface PricingCardsProps {
-  userId?: string;
-  subscriptionPlan?: UserSubscriptionPlan;
-}
 
 export function ProfileModules() {
   const [about, setAbout] = useState<string | undefined>(undefined);
@@ -93,7 +86,7 @@ export function ProfileModules() {
         const profile = orbis
           .select("name", "username", "imageid", "description")
           .from(PROFILE_ID)
-          // .where({ controller: user.user.did })
+          .where({ controller: user.user.did })
           .context(CONTEXT_ID);
         const profileResult = await profile.run();
         console.log(profileResult);
@@ -134,7 +127,7 @@ export function ProfileModules() {
               {!file && (
                 <div className="flex-col items-center justify-center">
                   <MediaRenderer src={profile?.imageId} />
-                  <div className="flex items-center justify-center">
+                  <div className="mt-4 flex items-center justify-center">
                     <label className="flex cursor-pointer items-center rounded-lg border border-dashed border-gray-300 bg-gray-50 p-2">
                       <div>
                         <h4 className="text-xs font-semibold text-gray-700">

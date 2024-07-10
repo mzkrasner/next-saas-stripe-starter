@@ -6,7 +6,6 @@ import { type Post } from "@/types";
 import { MediaRenderer } from "@thirdweb-dev/react";
 
 import { env } from "@/env.mjs";
-import { features } from "@/config/landing";
 import { Button } from "@/components/ui/button";
 import { Icons } from "@/components/shared/icons";
 import MaxWidthWrapper from "@/components/shared/max-width-wrapper";
@@ -32,7 +31,7 @@ export default function Posts() {
           body: JSON.stringify({
             query: `
               query {
-                forum_post {
+                forum_post_2 {
                   body
                   title
                   imageid
@@ -42,6 +41,7 @@ export default function Posts() {
                     username
                     description
                     imageid
+                    stream_id
                   }
                 }
               }
@@ -49,12 +49,12 @@ export default function Posts() {
           }),
         });
         const postResult = (await postQuery.json()) as {
-          data: { forum_post: Post[] };
+          data: { forum_post_2: Post[] };
         };
         console.log(postResult);
-        if (postResult.data.forum_post) {
-          setPosts(postResult.data.forum_post.slice(0, 10));
-          setAllMessages(postResult.data.forum_post);
+        if (postResult.data.forum_post_2) {
+          setPosts(postResult.data.forum_post_2.slice(0, 10));
+          setAllMessages(postResult.data.forum_post_2);
         }
       }
     } catch (error) {
@@ -101,7 +101,6 @@ export default function Posts() {
         <MaxWidthWrapper>
           <div className="mt-12 grid gap-3 sm:grid-cols-1 lg:grid-cols-1">
             {posts &&
-              posts.length &&
               posts.map((post, index) => (
                 <div key={`${post.title}-${index}`} className="relative grow">
                   <div className="group relative grow overflow-hidden rounded-2xl border bg-background p-5 md:p-8">
@@ -119,7 +118,7 @@ export default function Posts() {
                               height="2rem"
                               className="rounded-full"
                             />
-                            <Link href="#">
+                            <Link href={`/users/${post.profile.stream_id}`}>
                               <p className="relative text-sm font-semibold text-foreground hover:text-destructive">
                                 {post.profile.username}
                               </p>
@@ -165,6 +164,11 @@ export default function Posts() {
                   </div>
                 </div>
               ))}
+            {!posts && (
+              <div className="flex flex-col space-y-4 pb-16">
+                <p>Loading...</p>
+              </div>
+            )}
             <p className="mt-6 text-center text-muted-foreground">
               Showing Posts {pagination * 10 - 9} - {pagination * 10}
             </p>

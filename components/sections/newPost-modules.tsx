@@ -74,7 +74,7 @@ export function PostModules() {
           .value({
             title,
             body,
-            imageId: imageUrl ? imageUrl : "",
+            imageid: imageUrl ? imageUrl : "",
           })
           .context(CONTEXT_ID)
           .run();
@@ -86,7 +86,7 @@ export function PostModules() {
           setPost({
             title,
             body,
-            imageId: imageUrl ? imageUrl : "",
+            imageid: imageUrl ? imageUrl : "",
             stream_id: createQuery.content.stream_id,
             profile,
           });
@@ -219,10 +219,10 @@ export function PostModules() {
                       <p className="mt-6 pb-6 text-2xl font-bold">
                         {post.title}
                       </p>
-                      {post.imageId && (
+                      {post.imageid && (
                         <div className="relative mb-6">
                           <MediaRenderer
-                            src={post.imageId}
+                            src={post.imageid}
                             width="25%"
                             height="25%"
                             className="rounded-xl"
