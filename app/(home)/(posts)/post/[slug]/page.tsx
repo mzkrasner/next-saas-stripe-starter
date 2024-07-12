@@ -1,10 +1,10 @@
 "use client";
 
 import { type Post } from "@/types";
-import { MediaRenderer } from "@thirdweb-dev/react";
+import { MediaRenderer, useStorageUpload } from "@thirdweb-dev/react";
 import TextareaAutosize from "react-textarea-autosize";
 import { Button } from "@/components/ui/button";
-
+import Image from "next/image";
 import "@/styles/mdx.css";
 
 import { useEffect, useState } from "react";
@@ -28,18 +28,39 @@ export default function PostPage({
 }) {
   const [message, setMessage] = useState<Post | undefined>(undefined);
   const { orbis } = useODB();
+  const { mutateAsync: upload } = useStorageUpload();
   const [poststream, setPostStream] = useState<string | undefined>(undefined);
   const [comment, setComment] = useState<string | undefined>(undefined);
+  const [file, setFile] = useState<File | undefined>(undefined);
+
+  const uploadToIpfs = async () => {
+    const uploadUrl = await upload({
+      data: [file],
+      options: { uploadWithGatewayUrl: true, uploadWithoutDirectory: true },
+    });
+    return uploadUrl[0];
+  };
 
   const saveComment = async (): Promise<void> => {
     try {
+      if (!comment) {
+        alert("Please create your comment")
+        return;
+      }
       const user = await orbis.getConnectedUser();
-      console.log(comment)
+      
       if (user) {
+        let imageUrl;
+        if (file) {
+          imageUrl = await uploadToIpfs();
+        }
+        const created = new Date().toISOString();
         const updatequery = await orbis
           .insert(COMMENT_ID)
           .value({
             comment,
+            imageid: imageUrl ? imageUrl : "",
+            created,
             poststream: poststream,
           })
           .context(CONTEXT_ID)
@@ -167,6 +188,19 @@ export default function PostPage({
                         required
                       />
                     </div>
+                    {file && (
+                    <div className="rounded-t-lg bg-white px-4 py-2 dark:bg-gray-800">
+                      <label htmlFor="comment" className="sr-only">
+                        Image
+                      </label>
+                      <Image
+                        src={URL.createObjectURL(file)}
+                        width={200}
+                        height={200}
+                        alt={""}
+                      />
+                    </div>
+                  )}
                     <div className="flex items-center justify-between border-t px-3 py-2 dark:border-gray-600">
                       <Button
                         type="submit"

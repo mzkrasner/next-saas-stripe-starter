@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Profile } from "@/types";
 import { MediaRenderer } from "@thirdweb-dev/react";
+import { Oval } from "react-loader-spinner";
 import { useAccount } from "wagmi";
 
 import { env } from "@/env.mjs";
@@ -15,6 +16,7 @@ const CONTEXT_ID = env.NEXT_PUBLIC_CONTEXT_ID ?? "";
 
 export function HomeModules() {
   const [profile, setProfile] = useState<Profile | undefined>(undefined);
+  const [connected, setConnected] = useState<boolean | null>(null);
   const { orbis } = useODB();
   const { address } = useAccount();
 
@@ -42,7 +44,13 @@ export function HomeModules() {
 
   useEffect(() => {
     if (address) {
-      void getProfile();
+      orbis.getConnectedUser().then((user) => {
+        if (user) {
+          void getProfile();
+        } else {
+          setConnected(false);
+        }
+      });
     }
   }, [address]);
 
@@ -78,20 +86,37 @@ export function HomeModules() {
                     Welcome back,{" "}
                     <span className="text-pink-500">{profile.username}</span>
                   </p>
-                ) : (
+                ) : !profile && connected ? (
                   <p className="mt-4 text-left text-2xl font-semibold leading-6">
                     Welcome! Please set up your profile
+                  </p>
+                ) : (
+                  <div className="w-full items-center justify-center">
+                    <Oval
+                      visible={true}
+                      height="80"
+                      width="80"
+                      color="#4fa94d"
+                      ariaLabel="oval-loading"
+                      wrapperStyle={{}}
+                      wrapperClass=""
+                    />
+                  </div>
+                )}
+                {connected === false && (
+                  <p className="mt-4 text-left text-2xl font-semibold leading-6">
+                    Welcome! Please connect your wallet
                   </p>
                 )}
                 {profile ? (
                   <div className="mt-4 text-left text-sm text-muted-foreground">
                     Create a new post or edit your profile
                   </div>
-                ) : (
+                ) : !profile && connected ? (
                   <div className="mt-4 text-left text-sm text-muted-foreground">
                     Set up a profile in order to create posts and comments
                   </div>
-                )}
+                ) : null}
               </div>
             </div>
 

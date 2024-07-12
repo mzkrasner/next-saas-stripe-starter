@@ -82,6 +82,7 @@
     "react-dropzone": "^14.2.3",
     "react-email": "2.1.4",
     "react-hook-form": "^7.52.0",
+    "react-loader-spinner": "^6.1.6",
     "react-textarea-autosize": "^8.5.3",
     "resend": "^3.3.0",
     "sharp": "^0.33.4",

@@ -102,9 +102,7 @@ export const ODB = ({ children }: OrbisDBProps) => {
         orbis.getConnectedUser().then((user) => {
           console.log("Connected User:", user);
         });
-      } else {
-        localStorage.removeItem("orbis:session");
-      }
+      } 
     }, [isAuth, walletClient]);
 
     return isAuth;
